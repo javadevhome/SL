@@ -29,25 +29,28 @@ $(".roleNameAuthority").click(function() {
 				listr += "</ul></li>";
 			}
 			$("#functionList").html(listr);
-			
+
 			//获取默认勾选状态,循环遍历check选框
-			$("#functionList :checkbox").each(function(){
+			$("#functionList :checkbox").each(function() {
 				var checkbox = $(this);
 				$.ajax({
-					url:"/backend/getAuhorityDefault.html",
-					data:{fid:checkbox.attr("funcid"),rid:roleId},
-					type:"POST",
-					dataType:"html",
-					success:function(data){
-						if(data=="success"){
-							checkbox.attr("checked",true);
-						}else{
-							checkbox.attr("checked",false);
+					url : "/backend/getAuhorityDefault.html",
+					data : {
+						fid : checkbox.attr("funcid"),
+						rid : roleId
+					},
+					type : "POST",
+					dataType : "html",
+					success : function(data) {
+						if (data == "success") {
+							checkbox.attr("checked", true);
+						} else {
+							checkbox.attr("checked", false);
 						}
 					},
-					timeout:1000
+					timeout : 1000
 				})
-				
+
 			})
 		},
 		timeout : 1000
@@ -56,34 +59,55 @@ $(".roleNameAuthority").click(function() {
 })
 
 
-function subFunctionSelectChange(obj,id){
-	if(obj.checked){
-		$("#functiontitle"+id).attr("checked", true);  
+function subFunctionSelectChange(obj, id) {
+	if (obj.checked) {
+		$("#functiontitle" + id).attr("checked", true);
 	}
 }
 
-function mainFunctionSelectChange(obj,id){
-	if(obj.checked){
-		$("#subfuncul"+id+" :checkbox").attr("checked", true);  
-	}else{
-		$("#subfuncul"+id+" :checkbox").attr("checked", false);  
+function mainFunctionSelectChange(obj, id) {
+	if (obj.checked) {
+		$("#subfuncul" + id + " :checkbox").attr("checked", true);
+	} else {
+		$("#subfuncul" + id + " :checkbox").attr("checked", false);
 	}
-	
-	//alert($(this) +　id);
+
+//alert($(this) +　id);
 }
 
 
-$("#selectAll").click(function () {//全选  
-    $("#functionList :checkbox").attr("checked", true);  
-});  
+$("#selectAll").click(function() { //全选  
+	$("#functionList :checkbox").attr("checked", true);
+});
 
-$("#unSelect").click(function () {//全不选  
-    $("#functionList :checkbox").attr("checked", false);  
-});  
+$("#unSelect").click(function() { //全不选  
+	$("#functionList :checkbox").attr("checked", false);
+});
 
-$("#reverse").click(function(){
-	$("#functionList :checkbox").each(function(){
-		$(this).attr("checked",!$(this).attr("checked"));
+$("#reverse").click(function() {
+	$("#functionList :checkbox").each(function() {
+		$(this).attr("checked", !$(this).attr("checked"));
 	})
+})
+
+//保存修改后的权限
+$("#confirmsave").click(function() {
 	
+	if(confirm("您确定要赋予权限吗？")){
+		//获取functionId与roleId
+		var ids = $("#roleidhide").val()+"-";
+		$("#functionList :checkbox").each(function() {
+			if ($(this).attr("checked") == 'checked') {
+				ids += $(this).attr("funcId") + "-";
+			}
+		});
+		alert(ids);
+	
+	}
+	
+
+
+
+
+
 })
