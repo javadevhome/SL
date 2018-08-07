@@ -1,0 +1,17 @@
+package org.slsale.dao.role;
+
+import java.util.List;
+import org.slsale.pojo.Role;
+/**
+ * 角色接口
+ * @author Administrator
+ *
+ */
+public interface RoleMapper {
+	/**
+	 * 获取所有角色信息
+	 * @return
+	 */
+	List<Role> getRoleList();
+
+}

@@ -1,0 +1,12 @@
+2014-3-9
+1.系统lib添加jstl.1.2.jar包，以支持EL表达式的使用。
+2.开发公告管理
+	2.1 创建POJO Affiche.java
+	2.2 创建AfficheMapper.java and AfficeMapper.xml
+	2.3 在mybatis-config.xml中添加POJO配置。affiche
+	2.4 create AfficheService and impl java files.
+	2.5 create AfficheController.java file.
+	2.6 create affiche.jsp,affiche.js,affiche.css files.	
+	2.7 head.jsp中添加affiche.css的路径 <link href='/statics/localcss/affiche.css' rel='stylesheet'>
+
+	
