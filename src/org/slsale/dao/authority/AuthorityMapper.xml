@@ -6,8 +6,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- getAuthorityByFunctionIdAndRoleId -->
 	<select id="getAuthorityByFunctionIdAndRoleId" resultType="authority"
 		parameterType="authority">
-		select * from au_authority where functionId=#{functionId} and
+		select * from au_authority where
+		functionId=#{functionId} and
 		roleId=#{roleId}
 	</select>
+
+	<!-- delAuthorityByRoleId -->
+	<delete id="delAuthorityByRoleId" parameterType="Integer">
+		delete from
+		au_authority where roleId=#{roleId}
+	</delete>
+	<!-- addAuthority -->
+	<insert id="addAuthority" parameterType="authority">
+		insert into
+		au_authority(roleId,functionId,userTypeId,creationTime,createdBy)values(#{roleId},#{functionId},#{userTypeId},#{creationTime},#{createdBy})
+	</insert>
 
 </mapper>

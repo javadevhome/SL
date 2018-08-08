@@ -21,10 +21,15 @@ public interface FunctionMapper {
 	 * 根据function表中的parentId获取子功能列表
 	 */
 	public List<Function> getSubFunctionList(Function function) throws Exception;
-	
+
 	/**
 	 * 通过roleId获取功能列表
 	 */
-	public List<Function> getFunctionList(Function function)throws Exception;
+	public List<Function> getFunctionList(Function function) throws Exception;
+
+	/**
+	 * 通过functionId数组获取List<Function>
+	 */
+	public List<Function> getFunctionListByFunIdArray(String[] funIds) throws Exception;
 
 }

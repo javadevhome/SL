@@ -34,7 +34,7 @@ $(".roleNameAuthority").click(function() {
 			$("#functionList :checkbox").each(function() {
 				var checkbox = $(this);
 				$.ajax({
-					url : "/backend/getAuhorityDefault.html",
+					url : "/backend/getAuthorityDefault.html",
 					data : {
 						fid : checkbox.attr("funcid"),
 						rid : roleId
@@ -90,24 +90,37 @@ $("#reverse").click(function() {
 	})
 })
 
-//保存修改后的权限
+//保存赋予权限操作
 $("#confirmsave").click(function() {
-	
-	if(confirm("您确定要赋予权限吗？")){
-		//获取functionId与roleId
-		var ids = $("#roleidhide").val()+"-";
-		$("#functionList :checkbox").each(function() {
-			if ($(this).attr("checked") == 'checked') {
-				ids += $(this).attr("funcId") + "-";
+	if (confirm("您确定要赋予所选的授权吗？")) {
+		//获取roleId,获取所有勾选状态的functionId
+		var roleId = $("#roleidhide").val();
+		var funIds="";
+		$("#functionList :checkbox").each(function(){
+				if($(this).attr('checked')=='checked'){
+				funIds+=$(this).attr('funcid')+",";
 			}
-		});
-		alert(ids);
-	
+		})
+		//alert("角色id："+roleId+",所选择的funId有："+funIds);
+		$.ajax({
+			url:"/backend/modifyAuthority.html",
+			data:{rid:roleId,funId:funIds},
+			type:"POST",
+			dataType:"html",
+			error:function(){
+				alert("系统超时，请稍后再试！");
+			},
+			success:function(data){
+				if(data=="success"){
+					alert("恭喜你，授权成功！");
+				}else{
+					alert("授权失败，请稍后再试！");
+				}
+			}
+			
+		})
+		
+		
+
 	}
-	
-
-
-
-
-
 })

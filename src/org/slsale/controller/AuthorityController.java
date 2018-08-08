@@ -13,6 +13,7 @@ import org.slsale.pojo.Authority;
 import org.slsale.pojo.Function;
 import org.slsale.pojo.Role;
 import org.slsale.pojo.RoleFunctions;
+import org.slsale.pojo.User;
 import org.slsale.service.authority.AuthorityService;
 import org.slsale.service.function.FunctionService;
 import org.slsale.service.role.RoleService;
@@ -40,6 +41,7 @@ public class AuthorityController extends BaseController {
 	private FunctionService functionService;
 	@Resource
 	private AuthorityService authorityService;
+
 	/**
 	 * 进入权限首页
 	 * 
@@ -96,31 +98,58 @@ public class AuthorityController extends BaseController {
 		}
 		return result;
 	}
+
 	/**
-	 * 默认勾选转态
+	 * 获取默认勾选转态
+	 * 
 	 * @param fid
 	 * @param rid
 	 * @return
 	 */
-	@RequestMapping(value="/backend/getAuhorityDefault.html",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value = "/backend/getAuthorityDefault.html", produces = { "text/html;charset=UTF-8" })
 	@ResponseBody
-	public Object getAthorityDefault(@RequestParam(value="fid")Integer fid,@RequestParam(value="rid")Integer rid){
-		String result ="nodata";
+	public Object getAthorityDefault(@RequestParam(value = "fid") Integer fid,
+			@RequestParam(value = "rid") Integer rid) {
+		String result = "nodata";
 		Authority athority = new Authority();
 		athority.setFunctionId(fid);
 		athority.setRoleId(rid);
-		
+
 		try {
 			Authority _athority = authorityService.getAuthorityByFunctionIdAndRoleId(athority);
-			if(_athority!=null){
+			if (_athority != null) {
 				result = "success";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
-		
 	}
-	
+
+	@RequestMapping(value = "/backend/modifyAuthority.html", produces = { "text/html;charset=UTF-8" })
+	@ResponseBody
+	public Object modifyAuthority(@RequestParam(value = "rid", required = false) String roleId,
+			@RequestParam(value = "funId", required = false) String funIds, HttpSession session) {
+		User user = (User) session.getAttribute(Contains.USER_SESSION);
+		if (roleId == null || roleId.equals("")) {
+			return "nodata";
+		} else {
+			logger.info("=====================所选roleId" + roleId);
+			String funId[] = funIds.split(",");
+			logger.debug("=====funId[]的长度："+funId.length);
+			/*for (String string : funId) {
+				logger.info("传递进来的funid有" + string);
+			}*/
+			// 修改权限：先删除所选的RoleId下的所有权限，在增加所勾选的funId,roleId,到Authority表
+			try {
+				authorityService.hl_modifyAuthority(Integer.parseInt(roleId), funId, user.getLoginCode());
+			}  catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return "success";
+		}
+
+	}
 
 }

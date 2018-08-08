@@ -10,5 +10,9 @@ public interface AuthorityService {
 	 * @throws Exception
 	 */
 	public Authority getAuthorityByFunctionIdAndRoleId(Authority authority) throws Exception;
+	/**
+	 * ÐÞ¸ÄÈ¨ÏÞ
+	 */
+	public boolean hl_modifyAuthority(Integer roleId,String[] funIds,String createdBy)throws Exception;
 
 }
