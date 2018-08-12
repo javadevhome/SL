@@ -54,8 +54,8 @@
 	<link href='/statics/css/jquery.iphone.toggle.css' rel='stylesheet'>
 	<link href='/statics/css/opa-icons.css' rel='stylesheet'>
 	<link href='/statics/css/uploadify.css' rel='stylesheet'>
-	<!-- 华丽丽滴分割线 北大青鸟 start 2014-->
-	<!-- add by bdqn_hl 2014-2-28 start-->
+	
+	
 	<link href='/statics/localcss/userlist.css' rel='stylesheet'>
 	<link href='/statics/localcss/rolelist.css' rel='stylesheet'>
 	<link href='/statics/localcss/authoritymanage.css' rel='stylesheet'>
@@ -67,7 +67,7 @@
 	<link href='/statics/localcss/messagelist.css' rel='stylesheet'>
 	<!-- add by bdqn_hl 2014-2-28 end-->
 	
-	<!-- 华丽丽滴分割线 北大青鸟 end 2014 -->
+	
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>

@@ -10,9 +10,9 @@ import java.util.List;
  *
  */
 public class PageSupport {
-	private Integer totalCount;// 总记录数
-	private Integer currentPageNo;// 当前页码
-	private Integer pageCount;// 总页数
+	private Integer totalCount=0;// 总记录数
+	private Integer currentPageNo=1;// 当前页码
+	private Integer pageCount=1;// 总页数
 	private Integer pageSize=5;// 页大小
 
 	private List items = new ArrayList();// 保存需要展示数据的集合
@@ -22,7 +22,8 @@ public class PageSupport {
 	public void setTotalCount(Integer totalCount) {
 		if (totalCount > 0) {
 			this.totalCount = totalCount;
-			this.pageCount = this.totalCount % pageSize == 0 ? this.totalCount / pageSize : (this.totalCount / pageSize) + 1;
+			//this.pageCount = (totalCount+getPageSize()-1)/getPageSize();
+			this.pageCount = this.totalCount % this.pageSize == 0 ? this.totalCount / this.pageSize : (this.totalCount / this.pageSize + 1);
 		}
 
 	}
@@ -111,10 +112,10 @@ public class PageSupport {
 	public List<Integer> getPrevPages() {
 		List<Integer> list = new ArrayList<Integer>();
 		Integer _start = 1;
-		if (this.currentPageNo > num) {
-			_start = this.currentPageNo - num;
+		if (currentPageNo > num) {
+			_start = currentPageNo - num;
 		}
-		for (int i = _start; i < this.currentPageNo; i++) {
+		for (int i = _start; i < currentPageNo; i++) {
 			list.add(i);
 		}
 
@@ -127,14 +128,16 @@ public class PageSupport {
 	public List<Integer> getNextPages() {
 		List<Integer> list = new ArrayList<Integer>();
 		Integer _end = num;
+		
 		if (this.pageCount != null) {
-			if ((this.currentPageNo + num) < this.pageCount) {
-				_end = this.currentPageNo + num;
+			if (num<pageCount && (currentPageNo + num) < pageCount) {
+				_end = currentPageNo + _end;
 			} else {
-				_end = this.pageCount;
+				_end = pageCount;
 			}
 		}
-		for (int i = this.currentPageNo + 1; i <= _end; i++) {
+		
+		for (int i = currentPageNo + 1; i <= _end; i++) {
 			list.add(i);
 		}
 		return list;

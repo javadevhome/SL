@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getUserCount" resultType="int" parameterType="user">
 		select count(1) from au_user
-		<trim prefix="where" prefixOverrides="and | or">
+		<trim prefix="where" prefixOverrides="and">
 			<if test="userName != null">
 				and userName like CONCAT('%',#{userName},'%')
 			</if>

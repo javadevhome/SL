@@ -29,6 +29,8 @@ public class RedisAPI {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			returnResource(jedisPool, jedis);
 		}
 		return false;
 	}

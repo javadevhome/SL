@@ -41,5 +41,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) or parentId=999
 	</select>
 
+	<!-- getFunctionUrlListByRoleId -->
+	<select id="getFunctionUrlListByRoleId" parameterType="Integer"
+		resultType="function">
+		SELECT funcUrl FROM au_function WHERE id IN(SELECT functionId
+		FROM au_authority WHERE roleId=#{roleId}) AND parentId>0
+	</select>
+
 
 </mapper>

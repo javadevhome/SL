@@ -30,4 +30,10 @@ public class FunctionServiceImpl implements FunctionService {
 		return functionMapper.getFunctionList(function);
 	}
 
+	@Override
+	public List<Function> getFunctionUrlListByRoleId(Integer roleId) throws Exception{
+		return functionMapper.getFunctionUrlListByRoleId(roleId);
+	}
+	
+
 }

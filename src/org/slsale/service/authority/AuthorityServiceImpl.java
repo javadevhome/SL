@@ -33,7 +33,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 			List<Function> funList = functionMapper.getFunctionListByFunIdArray(funIds);
 			if (funList.size() > 0) {
 				for (Function function : funList) {
-					loger.info("查询得到的functionID有："+function.getId());
+					//loger.info("查询得到的functionID有："+function.getId());
 					Authority authority = new Authority();
 					authority.setCreatedBy(createdBy);
 					authority.setRoleId(roleId);

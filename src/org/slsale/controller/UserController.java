@@ -101,7 +101,7 @@ public class UserController extends BaseController {
 			model.addAllAttributes(map);
 			logger.debug("=============" + map);
 		}
-		List<Role> roleList=null;
+		List<Role> roleList = null;
 		try {
 			roleList = roleService.getRoleList();
 		} catch (Exception e2) {
@@ -113,15 +113,11 @@ public class UserController extends BaseController {
 		}
 
 		User user = new User();
-		if (!StringUtils.isNullOrEmpty(s_loginCode)) {
+		if (s_loginCode != null) {
 			user.setLoginCode("%" + SQLTools.transfer(s_loginCode) + "%");
-		} else {
-			user.setLoginCode(null);
 		}
-		if (!StringUtils.isNullOrEmpty(s_referCode)) {
+		if (s_referCode != null) {
 			user.setReferCode("%" + SQLTools.transfer(s_referCode) + "%");
-		} else {
-			user.setReferCode(null);
 		}
 		if (!StringUtils.isNullOrEmpty(s_roleId)) {
 			user.setRoleId(Integer.parseInt(s_roleId));
@@ -145,19 +141,21 @@ public class UserController extends BaseController {
 		}
 		// 封装page对象
 		PageSupport page = new PageSupport();
+		page.setPageSize(3);
 		try {
 			page.setTotalCount(userService.getUserCount(user));
 		} catch (Exception e) {
 			e.printStackTrace();
 			page.setPageCount(0);
 		}
+		
 		if (page.getTotalCount() > 0) {
+			
 			if (currentpage != null) {
 				page.setCurrentPageNo(Integer.valueOf(currentpage));
 			} else {
 				page.setCurrentPageNo(1);
 			}
-
 			if (page.getCurrentPageNo() <= 0) {
 				page.setCurrentPageNo(1);
 			}
@@ -170,7 +168,6 @@ public class UserController extends BaseController {
 			List<User> userList = null;
 			try {
 				userList = userService.getUserList(user);// 查询用户列表
-				page.setItems(userList);
 			} catch (Exception e) {
 				e.printStackTrace();
 				if (page == null) {
@@ -179,9 +176,13 @@ public class UserController extends BaseController {
 					page.setItems(null);
 				}
 			}
+			page.setItems(userList);
 		} else {
 			page.setItems(null);
 		}
+		logger.debug("=======总页数：" + page.getPageCount());
+		logger.debug("=======总记录数：" + page.getTotalCount());
+		logger.debug("=======后几页数：" + page.getNextPages());
 		model.addAttribute("page", page);
 		model.addAttribute("s_loginCode", s_loginCode);
 		model.addAttribute("s_referCode", s_referCode);
@@ -441,10 +442,10 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public Object delUserPic(@RequestParam(value = "id", required = false) String id,
 			@RequestParam(value = "picpath", required = false) String picpath, HttpServletRequest req) {
-		String result ="";
+		String result = "";
 		if (picpath == null || picpath.equals("")) {
-			result ="success";
-		}else{
+			result = "success";
+		} else {
 			String[] path = picpath.split("/");
 			String targetPath = req.getSession().getServletContext()
 					.getRealPath("/" + path[1] + File.separator + path[2] + File.separator + path[3]);
@@ -454,7 +455,7 @@ public class UserController extends BaseController {
 				if (file.delete()) {
 					if (id.equals("0")) {
 						logger.debug("===============图片删除成功！");
-						result =  "success";
+						result = "success";
 					} else {// 修改
 						User user = new User();
 						user.setId(Integer.parseInt(id));
@@ -468,7 +469,7 @@ public class UserController extends BaseController {
 						logger.debug("修改后的路径====" + targetPath);
 						try {
 							if (userService.delPic(user)) {
-								result= "success";
+								result = "success";
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -492,7 +493,7 @@ public class UserController extends BaseController {
 		String result = "failed";
 		if (!delUserType.equals("1")) {
 			result = "noallow";
-		}else{
+		} else {
 			if (this.delUserPic(delId, delIdCardPicPath, req).equals("success")
 					&& this.delUserPic(delId, delBankPicPath, req).equals("success"))
 				try {

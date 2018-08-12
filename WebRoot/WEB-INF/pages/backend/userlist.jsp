@@ -119,9 +119,9 @@
 						  <a href="#" title="${page.currentPageNo}">${page.currentPageNo}</a>
 						</li>
 						<c:if test="${page.nextPages!=null}">
-							<c:forEach items="${page.nextPages}" var="num">
-								<li><a href="/backend/userlist.html?currentpage=${num}&s_loginCode=${s_loginCode}&s_referCode=${s_referCode}&s_roleId=${s_roleId}&s_isStart=${s_isStart}" title="${num}">
-								${num} </a></li>
+							<c:forEach items="${page.nextPages}" var="nums">
+								<li><a href="/backend/userlist.html?currentpage=${nums}&s_loginCode=${s_loginCode}&s_referCode=${s_referCode}&s_roleId=${s_roleId}&s_isStart=${s_isStart}" title="${nums}">
+								${nums} </a></li>
 							</c:forEach>
 						</c:if>
 						<c:if test="${page.pageCount !=null}">

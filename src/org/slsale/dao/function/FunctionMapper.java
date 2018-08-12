@@ -2,6 +2,7 @@ package org.slsale.dao.function;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.slsale.pojo.Authority;
 import org.slsale.pojo.Function;
 
@@ -31,5 +32,10 @@ public interface FunctionMapper {
 	 * 通过functionId数组获取List<Function>
 	 */
 	public List<Function> getFunctionListByFunIdArray(String[] funIds) throws Exception;
+	
+	/**
+	 * getFunctionUrlListByRoleId
+	 */
+	public List<Function> getFunctionUrlListByRoleId(@Param("roleId") Integer roleId) throws Exception;
 
 }

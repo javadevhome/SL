@@ -9,8 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.slsale.common.Contains;
+import org.slsale.common.RedisAPI;
 import org.slsale.pojo.Authority;
 import org.slsale.pojo.Function;
+import org.slsale.pojo.Menu;
 import org.slsale.pojo.Role;
 import org.slsale.pojo.RoleFunctions;
 import org.slsale.pojo.User;
@@ -41,6 +43,10 @@ public class AuthorityController extends BaseController {
 	private FunctionService functionService;
 	@Resource
 	private AuthorityService authorityService;
+	@Resource
+	private LoginController loginController;
+	@Resource
+	private RedisAPI redisAPI;
 
 	/**
 	 * 进入权限首页
@@ -136,14 +142,30 @@ public class AuthorityController extends BaseController {
 		} else {
 			logger.info("=====================所选roleId" + roleId);
 			String funId[] = funIds.split(",");
-			logger.debug("=====funId[]的长度："+funId.length);
-			/*for (String string : funId) {
-				logger.info("传递进来的funid有" + string);
-			}*/
+			logger.debug("=====funId[]的长度：" + funId.length);
+			/*
+			 * for (String string : funId) { logger.info("传递进来的funid有" +
+			 * string); }
+			 */
 			// 修改权限：先删除所选的RoleId下的所有权限，在增加所勾选的funId,roleId,到Authority表
 			try {
 				authorityService.hl_modifyAuthority(Integer.parseInt(roleId), funId, user.getLoginCode());
-			}  catch (Exception e) {
+				// redis中保存的menuList需重新赋值
+				List<Menu> mList = loginController.getFunctionBycurrentUser(Integer.parseInt(roleId));
+				JSONArray jsonArray = JSONArray.fromObject(mList);// 转化成json格式
+				redisAPI.set("menuList" + roleId, jsonArray.toString());
+
+				// get all role url by roleId to redis自定义拦截器时使用
+				List<Function> funUrlList = functionService.getFunctionUrlListByRoleId(Integer.parseInt(roleId));
+				if (funUrlList != null || funUrlList.size() >= 0) {
+					StringBuffer sBuffer = new StringBuffer();
+					for (Function function : funUrlList) {
+						sBuffer.append(function.getFuncUrl());
+					}
+					// 将获取到的URL 列表保存到redis中
+					redisAPI.set("role" + Integer.parseInt(roleId) + "urlList", sBuffer.toString());
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 

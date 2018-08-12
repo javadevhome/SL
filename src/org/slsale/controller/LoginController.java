@@ -127,6 +127,26 @@ public class LoginController extends BaseController {
 					return new ModelAndView("redirect:/");
 				}
 			}
+			//保存当前role的可用的url到redis中
+			if(!redisAPI.exists("role" + user.getRoleId() + "urlList")){
+				try {
+					List<Function> funUrlList = functionService.getFunctionUrlListByRoleId(user.getRoleId());
+					if(funUrlList!=null || funUrlList.size()>=0){
+						StringBuffer sBuffer = new StringBuffer();
+						for (Function function : funUrlList) {
+							sBuffer.append(function.getFuncUrl());
+						}
+						redisAPI.set("role" + user.getRoleId() + "urlList", sBuffer.toString());
+					}
+					
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			
 			session.setAttribute(Contains.SESSION_BASE_MODEL, model);
 			return new ModelAndView("main", model);
 		}
@@ -172,6 +192,14 @@ public class LoginController extends BaseController {
 			e.printStackTrace();
 		}
 		return mList;
+	}
+	
+	/**
+	 * 401页面
+	 */
+	@RequestMapping(value="401.html")
+	public String noAuthority(){
+		return "401";
 	}
 
 }
